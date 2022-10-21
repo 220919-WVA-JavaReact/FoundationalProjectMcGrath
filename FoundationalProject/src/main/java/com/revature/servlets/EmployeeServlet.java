@@ -152,6 +152,7 @@ public class EmployeeServlet extends HttpServlet {
             resp.getWriter().write("Thanks for logging in! See you next time!");
         } else {
             resp.setStatus(401);
+            resp.getWriter().write("Error: no user to log out");
         }
     }
 }
