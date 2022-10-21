@@ -89,10 +89,6 @@ public class EmployeeService {
 
     public Employee register(String first, String last, String username, String password) {
         return ed.createEmployee(first, last, username, password);
-//        if (!employee.getUsername().equals("")){
-//            return employee;
-//        }
-//        return null;
     }
 
 //    public Employee register (String first, String last, String username, String password){

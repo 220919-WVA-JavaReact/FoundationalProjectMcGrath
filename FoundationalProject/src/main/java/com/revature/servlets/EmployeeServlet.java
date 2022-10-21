@@ -70,6 +70,7 @@ public class EmployeeServlet extends HttpServlet {
                 if (responsePayload.equals("null")) {
                     resp.setStatus(400);
                     resp.getWriter().write("Sorry, that login was incorrect. Please check your credentials.");
+                    session.invalidate();
                 }  else {
                     resp.setStatus(200);
                     resp.getWriter().write("Welcome back, " + emp.getFirst() + "! What would you like to do today?");
@@ -82,17 +83,22 @@ public class EmployeeServlet extends HttpServlet {
             } else {
                 Employee employee = mapper.readValue(req.getInputStream(), Employee.class);
                 Employee emp = es.register(employee.getFirst(), employee.getLast(), employee.getUsername(), employee.getPassword());
+//                session = req.getSession();
+//                session.setAttribute("auth-emp", emp);
                 String responsePayload = mapper.writeValueAsString(emp);
                 if (responsePayload.equals("null")) {
                     resp.setStatus(409);
                     resp.getWriter().write("Sorry, too many users with that name!");
-                } else if (employee.getFirst().equals("") || employee.getLast().equals("") || employee.getPassword().equals("") || employee.getUsername().equals("")) {
-                    resp.setStatus(400);
-                    resp.getWriter().write("Please make sure you have entered the required information");
-                } else if (employee.getUsername().equals("coffee") && employee.getPassword().equals("teapots")) {
-                    resp.setStatus(418);
-                    resp.getWriter().write("Sorry, teapots can't be used for coffee");
-                } else {
+                } else if (employee.getFirst().equals("") | employee.getLast().equals("") | employee.getPassword().equals("") | employee.getUsername().equals("")) {
+                        resp.setStatus(400);
+                        resp.getWriter().write("Please make sure you have entered the required information");
+
+
+                    } else if (employee.getUsername().equals("coffee") && employee.getPassword().equals("teapots")) {
+                        resp.setStatus(418);
+                        resp.getWriter().write("Sorry, teapots can't be used for coffee");
+
+                    } else {
                     resp.setStatus(201);
                     session = req.getSession();
                     session.setAttribute("auth-emp", emp);
